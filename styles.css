@@ -1,0 +1,158 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    height: 100vh;
+    width: 100vw;
+    background: linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 1) 70%,
+            rgba(0, 0, 0, 0.5) 100%
+    );
+}
+
+/*###               board               ###*/
+.board{
+    display: grid;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-content: center;
+    justify-items: center;
+    align-items: center;
+    grid-template-columns: repeat(3, auto);
+}
+
+/*###               hover selection               ###*/
+.board.x .cell:not(.x):not(.o):hover::after,
+.board.x .cell:not(.x):not(.o):hover::before,
+.board.o .cell:not(.x):not(.o):hover::after,
+.board.o .cell:not(.x):not(.o):hover::before{
+    background: rgba(0, 0, 0, 0.2) !important; /*como não usar important?*/
+}
+
+/*###               cells               ###*/
+.cell{
+    width: 100px;
+    height: 100px;
+    border: 2px solid white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+/*###               forbidden               ###*/
+.cell.x,
+.cell.o{
+    cursor: not-allowed;
+}
+
+/*###           cell's border            ###*/
+.cell:nth-child(1),
+.cell:nth-child(2),
+.cell:nth-child(3){
+    border-top: none;
+}
+.cell:nth-child(1),
+.cell:nth-child(4),
+.cell:nth-child(7){
+    border-left: none;
+}
+.cell:nth-child(3),
+.cell:nth-child(6),
+.cell:nth-child(9){
+    border-right: none;
+}
+.cell:nth-child(7),
+.cell:nth-child(8),
+.cell:nth-child(9){
+    border-bottom: none;
+}
+
+/*###           cell's border-color            ###*/
+.cell:nth-child(1),
+.cell:nth-child(2),
+.cell:nth-child(3),
+.cell:nth-child(4),
+.cell:nth-child(5),
+.cell:nth-child(6),
+.cell:nth-child(7),
+.cell:nth-child(8),
+.cell:nth-child(9){
+    border-color: black;
+}
+
+/*###           x            ###*/
+.cell.x::before,
+.cell.x::after,
+.board.x .cell:not(.x):not(.o):hover::after,
+.board.x .cell:not(.x):not(.o):hover::before{
+    content: "";
+    height: calc(100px * 0.15);
+    width: calc(100px * 0.9);
+    background: black;
+    position: absolute;
+}
+.cell.x::before,
+.board.x .cell:hover::before{
+    transform: rotate(45deg);
+}
+.cell.x::after,
+.board.x .cell:hover::after{
+    transform: rotate(-45deg);
+}
+
+/*###           o            ###*/
+.cell.o::before,
+.board.o .cell:not(.x):not(.o):hover::before{
+    content: "";
+    height: calc(100px * 0.82);
+    width: calc(100px * 0.82);
+    background: black;
+    position: absolute;
+    border-radius: 50%;
+}
+.cell.o::after{
+    content: "";
+    height: calc(100px * 0.55);
+    width: calc(100px * 0.55);
+    background: white;
+    position: absolute;
+    border-radius: 50%;
+}
+
+/*###       win message       ###*/
+.winning-message{
+    display: none; /*flex*/
+    position: fixed;    /* ->       tip: para a div         */
+    top: 0;             /*     fugir do fluxo da página     */
+    bottom: 0;          /*   e sobrepor todos os elementos  */
+    left: 0;            /*     da mesma, ocupando toda a    */
+    right: 0;           /* <- largura e comprimento do doc. */
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+.winning-message button{
+    font-size: 2.5rem;
+    background-color: rgba(250, 250, 250, 1);
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    border: none;
+    margin-top: 16px; /* espaçamento entre botão e texto */
+    color: black;
+}
+.winning-message button:hover{
+    background-color: rgba(0, 0, 0, 1);
+    color: white;
+}
+.winning-message p{
+    font-size: 5rem;
+    color: white;
+}
