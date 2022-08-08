@@ -26,14 +26,6 @@ body{
     grid-template-columns: repeat(3, auto);
 }
 
-/*###               hover selection               ###*/
-.board.x .cell:not(.x):not(.o):hover::after,
-.board.x .cell:not(.x):not(.o):hover::before,
-.board.o .cell:not(.x):not(.o):hover::after,
-.board.o .cell:not(.x):not(.o):hover::before{
-    background: rgba(0, 0, 0, 0.2) !important; /*como não usar important?*/
-}
-
 /*###               cells               ###*/
 .cell{
     width: 100px;
@@ -125,9 +117,17 @@ body{
     border-radius: 50%;
 }
 
+/*###               hover selection               ###*/
+.board.x .cell:not(.x):not(.o):hover::after,
+.board.x .cell:not(.x):not(.o):hover::before,
+.board.o .cell:not(.x):not(.o):hover::after,
+.board.o .cell:not(.x):not(.o):hover::before{
+    background: rgba(0, 0, 0, 0.2); /*!important;*/
+}
+
 /*###       win message       ###*/
 .winning-message{
-    display: none; /*flex*/
+    display: none; /*flex vs none*/
     position: fixed;    /* ->       tip: para a div         */
     top: 0;             /*     fugir do fluxo da página     */
     bottom: 0;          /*   e sobrepor todos os elementos  */
@@ -155,4 +155,7 @@ body{
 .winning-message p{
     font-size: 5rem;
     color: white;
+}
+.show-winning-message{
+    display: flex;
 }
