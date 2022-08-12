@@ -4,6 +4,8 @@
     padding: 0;
 }
 
+/*  ^ border-box, sem margem e padding, aplicado a todos os elementos html.*/
+
 body{
     height: 100vh;
     width: 100vw;
@@ -13,8 +15,34 @@ body{
             rgba(0, 0, 0, 0.5) 100%
     );
 }
+/*#############               IN-GAME TOP SCREEN               #############*/
 
-/*###               board               ###*/
+.info{
+    display: flex;
+    height: 50px;
+    width: 100%;
+    justify-content: space-between;
+    padding: 30px;
+    align-items: center;
+}
+#player1-score{
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+#player2-score{
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+#round{
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+
+/*#############               BOARD               #############*/
 .board{
     display: grid;
     width: 100%;
@@ -26,7 +54,8 @@ body{
     grid-template-columns: repeat(3, auto);
 }
 
-/*###               cells               ###*/
+/*#############               CELLS               #############*/
+
 .cell{
     width: 100px;
     height: 100px;
@@ -37,13 +66,23 @@ body{
     position: relative;
 }
 
-/*###               forbidden               ###*/
+/*#############               1UP vs 2UP ANIMATION              #############*/
+.x_mid, .o_mid {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+/*#############               to forbid cursor               #############*/
 .cell.x,
 .cell.o{
     cursor: not-allowed;
 }
 
-/*###           cell's border            ###*/
+/*#############           CELL'S BORDER            #############*/
 .cell:nth-child(1),
 .cell:nth-child(2),
 .cell:nth-child(3){
@@ -65,7 +104,7 @@ body{
     border-bottom: none;
 }
 
-/*###           cell's border-color            ###*/
+/*#############           CELL'S BOARDER COLOR            #############*/
 .cell:nth-child(1),
 .cell:nth-child(2),
 .cell:nth-child(3),
@@ -78,9 +117,12 @@ body{
     border-color: black;
 }
 
-/*###           x            ###*/
+/*#############           x            #############*/
+
 .cell.x::before,
 .cell.x::after,
+.x_mid::before,
+.x_mid::after,
 .board.x .cell:not(.x):not(.o):hover::after,
 .board.x .cell:not(.x):not(.o):hover::before{
     content: "";
@@ -90,16 +132,26 @@ body{
     position: absolute;
 }
 .cell.x::before,
+.x_mid::before,
 .board.x .cell:hover::before{
     transform: rotate(45deg);
 }
 .cell.x::after,
+.x_mid::after,
 .board.x .cell:hover::after{
     transform: rotate(-45deg);
 }
 
-/*###           o            ###*/
+.x_mid::before,
+.x_mid::after {
+    height: calc(20px * 0.15);
+    width: calc(20px * 0.9);
+}
+
+/*#############           o            #############*/
+
 .cell.o::before,
+.o_mid::before,
 .board.o .cell:not(.x):not(.o):hover::before{
     content: "";
     height: calc(100px * 0.82);
@@ -108,7 +160,8 @@ body{
     position: absolute;
     border-radius: 50%;
 }
-.cell.o::after{
+.cell.o::after,
+.o_mid::after {
     content: "";
     height: calc(100px * 0.55);
     width: calc(100px * 0.55);
@@ -117,7 +170,18 @@ body{
     border-radius: 50%;
 }
 
-/*###               hover selection               ###*/
+.o_mid::before {
+    height: calc(20px * 0.82);
+    width: calc(20px * 0.82);
+}
+
+.o_mid::after {
+    height: calc(20px * 0.55);
+    width: calc(20px * 0.55);
+}
+
+/*#############               HOVER SELECTION               #############*/
+
 .board.x .cell:not(.x):not(.o):hover::after,
 .board.x .cell:not(.x):not(.o):hover::before,
 .board.o .cell:not(.x):not(.o):hover::after,
@@ -125,9 +189,10 @@ body{
     background: rgba(0, 0, 0, 0.2); /*!important;*/
 }
 
-/*###       win message       ###*/
+/*#############             WINNING MESSAGE             #############*/
+
 .winning-message{
-    display: none; /*flex vs none*/
+    display: none;
     position: fixed;    /* ->       tip: para a div         */
     top: 0;             /*     fugir do fluxo da página     */
     bottom: 0;          /*   e sobrepor todos os elementos  */
@@ -139,7 +204,7 @@ body{
     background-color: rgba(0, 0, 0, 0.7);
 }
 .winning-message button{
-    font-size: 2.5rem;
+    font-size: 2rem;
     background-color: rgba(250, 250, 250, 1);
     padding: 10px 15px;
     cursor: pointer;
@@ -152,6 +217,10 @@ body{
     background-color: rgba(0, 0, 0, 1);
     color: white;
 }
+#back-to-menu{      /* <- botão para regressar ao menu */
+    margin-top: 33px;
+    font-size: 1rem;
+}
 .winning-message p{
     font-size: 5rem;
     color: white;
@@ -159,3 +228,160 @@ body{
 .show-winning-message{
     display: flex;
 }
+
+/*#############              START MENU : ft_startMenu(.js)              #############*/
+
+.get-players-name form{
+    text-align: center;
+    font-size: 1rem;
+    color: white;
+    height: 50px;
+}
+/*###     animation using 'focus' (see below), because form/input (which i should not have used):     ###*/
+@keyframes input-animation {
+    0%      {border-color: black;}
+    50%     {border-color: forestgreen;}
+    100%    {border-color: black;}
+}
+.get-players-name input{
+    text-align: center;
+    height: 40px;
+    width: 300px;
+    background-color: rgba(250, 250, 250, 1);
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: 2px solid black;
+    margin-top: 16px;
+    outline: 0;
+}
+/*###     animation using 'focus' because form/input (which i should not have used):     ###*/
+.get-players-name input:focus {     /* focus is kinda like hover */
+    animation-name: input-animation;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+}
+/*###     addClass through ft_namesCheck:      ###*/
+/*###  animation:   */
+@keyframes error-animation {
+    0%      {border-color: black;}
+    50%     {border-color: red;}
+    100%    {border-color: black;}
+}
+
+.get-players-name input.p1-error, .get-players-name input.p2-error{
+    animation-name: error-animation;
+    animation-duration: 0.5s;
+    animation-iteration-count: 5;
+}
+
+.get-players-name button{
+    text-align: center;
+    height: 40px;
+    width: 300px;
+    background-color: rgba(250, 250, 250, 1);
+    padding: 10px 15px;
+    border-radius: 5px;
+    border-color: black;
+    margin-top: 16px;
+    cursor: pointer;
+}
+
+#start-button:hover{
+    background-color: black;
+    color: white;
+    /*background-color: rgb(180, 180, 180);*/
+}
+
+.get-players-name{
+    display: flex;
+    position: fixed;    /* ->       tip: para a div         */
+    top: 0;             /*     fugir do fluxo da página     */
+    bottom: 133px;      /*   e sobrepor todos os elementos  */
+    left: 0;            /*     da mesma, ocupando toda a    */
+    right: 0;           /* <- largura e comprimento do doc. */
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.xoPlayers{
+    display: flex;
+    position: fixed;    /* ->       tip: para a div         */
+    top: 0;             /*     fugir do fluxo da página     */
+    bottom: 0;          /*   e sobrepor todos os elementos  */
+    left: 0;            /*     da mesma, ocupando toda a    */
+    right: 0;           /* <- largura e comprimento do doc. */
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+@keyframes player1_named-move-animation {
+    from   {left: -100vw}
+    to     {left: 0}
+}
+
+#player1_named{
+    animation-name: player1_named-move-animation;
+    position: relative;
+    animation-duration: 3s;
+    margin-right: 10px;
+}
+
+@keyframes player2_named-move-animation {
+    from   {left: 100vw}
+    to     {left: 0}
+}
+
+#player2_named{
+    animation-name: player2_named-move-animation;
+    position: relative;
+    animation-duration: 3s;
+    margin-left: 10px;
+}
+
+@keyframes player_named-light-animation {
+    0%      {color: black; border-color: darkred;}
+    50%     {color: darkred; border-color: darkred;}
+    100%    {color: darkred; border-color: black;}
+}
+
+#player1_named.stopped, #player2_named.stopped{
+    animation-name: player_named-light-animation;
+    animation-duration: 1.5s;
+}
+
+
+.xoPlayers{
+    text-align: center;
+}
+.xoPlayers p{
+    margin: 16px 0; /* when using margin with two values: 1st (16px) is top & bottom and 2nd (0px) is left & right;
+                         we can use four values: it goes clockwise like top, right, bottom, left */
+    font-size: 20px;
+}
+
+.mid_player_container {
+    display: flex;
+    align-items: center;
+}
+
+@keyframes vs-animation {
+    0%      {color: black; border-color: darkred;}
+    50%     {color: red; border-color: darkred;}
+    100%    {color: darkred; border-color: black;}
+}
+
+#vs{
+    animation-name: vs-animation;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+
+}
+
+/*#############             timer               #############*/
+/*      works but only visible in localStorage history      */
+
+
+
+/*                                                    João Afonso                                                    */
